@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dexter's Quiz App@Terra-Learning</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+      background-color: rgb(32, 189, 136);
+    }
+    #quiz-container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .question {
+      margin-bottom: 30px;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+    }
+    .option {
+      margin: 5px 0;
+    }
+    #result {
+      margin-top: 30px;
+    }
+    #scoreboard {
+      margin-top: 30px;
+    }
+    #highscores {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="quiz-container">
+    <h1>StartQuiz</h1>
+    <div id="question-container" class="question"></div>
+    <div id="options-container" class="options"></div>
+    <button id="nextButton" onclick="nextQuestion()">Next Question</button>
+    <h2>High Scores</h2>
+  </div>
+
+  <script>
+
+    const quizData = [
+    {
+        question: "1. How do we write comments in HTML?",
+        options:["text: <…….!>", "text: </…….>","text: <!……>","text: '</……/>"],
+        correctAnswer: "JavaScript"
+    },
+      {
+        question: "2. Which programming language is known as the language of the web?",
+        options:["Java", "Python","JavaScript","C++"],
+        correctAnswer: "Python"
+      },
+
+      {
+        question: "3. Which of the following CSS property is used to make the text bold?",
+        options:["text-decoration: boldideo", "font-weight: bold", "font-style: bold", "text-align: bold"], 
+        correctAnswer: "font-weight: bold"
+      },
+
+
+      {
+        question: "4. Among the following, which is the HTML paragraph tag?",
+        options:["p", "pre", "br", "a"],
+        correctAnswer:"p"
+      },
+
+      {
+        question: "5. Which character is used to represent when a tag is closed in HTML?",
+        options:["#", "!","/", "," ],
+        correctAnswer:"/"
+      },
+
+      {
+        question: "6. Which of the following HTML tag is used to create a numbered list?",
+        options: ["ol", "ul","li", "il"],
+        correctAnswer:"ol"
+      },
+
+      {
+        question: "7. How to create a checkbox in HTML Form?",
+        options: ["input type=text","input type=textarea","input type=checkbox", "input type=button"],
+        correctAnswer:"input type=checkbox"
+      },
+
+      {
+      question: "8. Which HTML tag is used to insert an image?",
+      options:["img url=htmllogo.jpg", "img link=htmllogo.jpg", "img alt=htmllogo.jpg", "img src=htmllogo.jpg"],
+      correctAnswer:"img src=htmllogo.jpg"
+      },
+      
+      {
+      question: "9. Which of the following measurement defines a measurement in pixels?",
+      options: ["pt", "px", "rem", "em"], 
+      correctAnswer: "px" 
+    },
+    {
+    question: "10. Which of the following property defines in a shorthand form the width, style, and color for all four sides of an elements border?",
+    options:["border", "border-style", "aborder-color", "border-all"],
+    correctAnswer:"border"
+    },
+      
+
+    ];
+
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const quizContainer = document.getElementById("quiz-container");
+    const questionContainer = document.getElementById("question-container");
+    const optionsContainer = document.getElementById("options-container");
+    const resultContainer = document.getElementById("result");
+    const highScoresContainer = document.getElementById("highScores");
+    const nextButton = document.getElementById("nextButton");
+
+   
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      displayQuestion();
+      displayOptions();
+      resultContainer.textContent = "";
+    }
+
+    function displayQuestion() {
+      questionContainer.textContent = quizData[currentQuestionIndex].question;
+    }
+
+    function displayOptions() {
+      optionsContainer.innerHTML = "";
+      quizData[currentQuestionIndex].options.forEach((option, index) => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.className = "option";
+        button.addEventListener("click", () => checkAnswer(option));
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selectedOption) {
+      const correctAnswer = quizData[currentQuestionIndex].correctAnswer;
+      if (selectedOption === correctAnswer) {
+        score++;
+      }
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < quizData.length) {
+        displayQuestion();
+        displayOptions();
+      } else {
+        endQuiz();
+      }
+    }
+
+    function endQuiz() {
+      quizContainer.style.display = "none";
+      displayResult();
+      saveHighScore(score);
+      displayHighScores();
+    }
+
+    function displayResult() {
+      resultContainer.innerHTML = "<h2>Your Results</h2><p>You scored ${score} out of 10{quizData.length} questions correctly.</p>";
+    }
+
+    function saveHighScore(score) {
+      const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+      highScores.push(score);
+      highScores.sort((a, b) => b - a);
+      localStorage.setItem("highScores", JSON.stringify(highScores));
+    }
+
+    function displayHighScores() {
+      const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+      highScoresContainer.innerHTML = "<h2>High Scores</h2><ul id=highScores></ul>";
+      const ul = document.getElementById("highScores");
+      highScores.forEach((score, index) => {
+        if (index < 10) {
+
+        }
+      });
+    };
+
+    startQuiz();
+  </script>
+
+</body>
+</html>
